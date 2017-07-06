@@ -1,0 +1,5 @@
+site_name: My Docs
+theme: 'material'
+pages:
+  - Home: 'index.md'
+  - Python benchmarks: 'pythoncontainers.md'
