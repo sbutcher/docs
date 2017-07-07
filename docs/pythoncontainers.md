@@ -67,3 +67,6 @@ The python compiled with `--enable-optimizations` performed very poorly, and sho
 
 Containers provide an excellent way to provision tricky applications, particularly in the Bioinformatics and Deep-learning disciplines, but additionally provide a safe and easy way to gain performance improvements and new features offered by the latest and greatest versions of common applications, while offering an easy way to compare different configuration and compilation options that, as we have seen, could have significant impact on performance, which is critical in an HPC environment.
 
+## Data files
+
+The Singularity definition files used for these tests can be found on [Github](https://github.com/sbutcher/python_test).
