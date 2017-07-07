@@ -26,33 +26,33 @@ The following statistics were averaged over multiple runs using the Grid Engine 
 
 #### Processor type: Xeon E5-2683 v4
 
-| Task | Wallclock/s | ioops | mem/MB |
-| --- | ----:   | ---: | ----: |
+| Task | cpusecs | ioops | RAM/MB |
+| --- | --: | --: | --: |
 | Native  | 4731 | 3751 | 566 |
 | Container  | 4723 | 3943 | 565 |
-| Container, enable-optimisations | 9892 | 3937 | 1184 |
+| Container,<br/> enable-optimisations | 9892 | 3937 | 1184 |
 | Container, SCL  | 5604| 3976 | 681 |
 
 ![nxv chart](./nxv.png)
 
 #### Processor type: AMD Opteron 6712
 
-| Task | Wallclock/s | ioops | mem/MB   |
-| ---| -----:  | ---: | ----: |
-| Native  | 9687    | 3975  | 1160 |
-| Container  | 9667    | 4166  | 1158 |
-| Container, enable-optimisations  | 23478   | 4155  | 2810 |
-| Container, SCL  | 11813   | 4229  | 1436 |
+| Task | cpusecs | ioops | mem/MB   |
+| ---| --:  | --: | --: |
+| Native  | 9687 | 3975  | 1160 |
+| Container  | 9667 | 4166  | 1158 |
+| Container,<br/> enable-optimisations | 23478 | 4155 | 2810 |
+| Container, SCL | 11813 | 4229 | 1436 |
 
 ![ccn chart](./ccn.png)
 
 #### Processor type: Xeon E5645
 
-| Task | Wallclock/s | ioops  | mem/MB   |
+| Task | cpusecs | ioops  | mem/MB   |
 | -----| -----: | ----: | ----: |
 | Native  | 6186   | 3373  | 741  |
 | Container  | 6305   | 3569  | 754  |
-| Container, enable-optimisations  | 15237  | 3573  | 1824 |
+| Container,<br/> enable-optimisations  | 15237  | 3573  | 1824 |
 | Container, SCL  | 7722   | 3634  | 938  |
 
 ![dn chart](./dn.png)
