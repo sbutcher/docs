@@ -11,14 +11,14 @@ Linux containers offer a great way to compare software performance on a producti
 
 After early tests on 3 different node type using python 2.7.8 on CentOS6 containers showed SCL python running the same code between 16-25% more slowly than a self-compiled python 2.7.8 running natively, further tests were performed, instead with CentOS 7.
 
-A single-core python job to find [primes of a large number](https://github.com/sbutcher/python_test/blob/master/python_prime2.py) was run natively on a compute node via the Univa Grid Engine job scheduler. The job was then repeated on the same node inside a container running the same version of python compiled with gcc, and also a packaged python provided by the CentOS [Software Collections Library](https://wiki.centos.org/AdditionalResources/Repositories/SCL). The SCL is marketed as a simple way to get multiple versions of python on your enterprise OS without having to compile new versions. Jobs were run in 4 different environments:
+A single-core python job to find [primes of a large number](https://github.com/sbutcher/python_test/blob/master/python_prime2.py) was run natively on a compute node via the Univa Grid Engine job scheduler. The job was then repeated on the same node inside a container running the same version of python compiled with gcc, and also a packaged python provided by the CentOS [Software Collections Library](https://wiki.centos.org/AdditionalResources/Repositories/SCL). The SCL is marketed as a simple way to get multiple versions of python on your enterprise OS without having to compile new versions. Jobs were run using CentOS 7.3 and python 2.7.13 supplied in the following ways:
 
-* native CentOS 7.3 (no container), running python 2.7.13 compiled on CentOS 7.3 (A)
-* Singularity container, running CentOS 7.3 and python 2.7.13 compiled from source (B)
-* Singularity container, running CentOS 7.3 and python 2.7.13 compiled from source, configured with --enable-optimizations flag (C)
-* Singularity container, running CentOS 7.3 and python 2.7.13 package via CentOS SCL (D)
+* (A) Native OS
+* (B) Singularity container, python compiled from source
+* (C) Singularity container, python compiled from source, configured with --enable-optimizations flag
+* (D) Singularity container, python supplied via  CentOS SCL
 
-Where python was compiled (tasks A,B,C), the distribution-provided gcc version 4.8.5 was used. Task B is closest to the enviroment provided used by the control task A and can be directly compared to see if using a container has any affect on performance versus the native OS.
+Where python was compiled, the same gcc version 4.8.5 was used. Tasks A and B can be compared directly to establish if there is any performance impact on using containers vs native OS.
 
 ### Wallclock Results
 
