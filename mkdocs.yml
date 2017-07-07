@@ -3,3 +3,4 @@ theme: 'material'
 pages:
   - Home: 'index.md'
   - Python benchmarks: 'pythoncontainers.md'
+  - About: 'about.md'
