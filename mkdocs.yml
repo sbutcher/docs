@@ -1,5 +1,8 @@
 site_name: My Docs
 theme: 'material'
+extra_css:
+    - css/extra.css
+    - font_awesome/css/font-awesome.min.css
 pages:
   - Home: 'index.md'
   - Python benchmarks: 'pythoncontainers.md'

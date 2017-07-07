@@ -22,16 +22,16 @@ Where python was compiled, the same gcc version 4.8.5 was used. Tasks A and B ca
 
 ### Wallclock Results
 
-The following statistics were gathered from the Grid Engine `qacct` command, and rounded to the nearest whole number for readability. Walltimes were compared with the output of  passing the `time` command to the python command, to give confidence in the results.
+The following statistics were averaged over multiple runs using the Grid Engine `qacct` command, and rounded to the nearest whole number for readability. The total wallclock time is reported by the job scheduler, and includes any overheads a container may introduce, such as time to load a container file.
 
 #### Processor type: Xeon E5-2683 v4
 
-| Task | Wallclock/s | ioops  | mem/MB   |
+| Task | Wallclock/s | ioops | mem/MB |
 | --- | ----:   | ---: | ----: |
-| A  | 4731   | 3751   | 566  |
-| B  | 4723   | 3943   | 565  |
-| C  | 9892   | 3937   | 1184 |
-| D  | 5604   | 3976   | 681  |
+| Native  | 4731 | 3751 | 566 |
+| Container  | 4723 | 3943 | 565 |
+| Container, enable-optimisations | 9892 | 3937 | 1184 |
+| Container, SCL  | 5604| 3976 | 681 |
 
 ![nxv chart](./nxv.png)
 
@@ -39,10 +39,10 @@ The following statistics were gathered from the Grid Engine `qacct` command, and
 
 | Task | Wallclock/s | ioops | mem/MB   |
 | ---| -----:  | ---: | ----: |
-| A  | 9687    | 3975  | 1160 |
-| B  | 9667    | 4166  | 1158 |
-| C  | 23478   | 4155  | 2810 |
-| D  | 11813   | 4229  | 1436 |
+| Native  | 9687    | 3975  | 1160 |
+| Container  | 9667    | 4166  | 1158 |
+| Container, enable-optimisations  | 23478   | 4155  | 2810 |
+| Container, SCL  | 11813   | 4229  | 1436 |
 
 ![ccn chart](./ccn.png)
 
@@ -50,16 +50,16 @@ The following statistics were gathered from the Grid Engine `qacct` command, and
 
 | Task | Wallclock/s | ioops  | mem/MB   |
 | -----| -----: | ----: | ----: |
-| A  | 6186   | 3373  | 741  |
-| B  | 6305   | 3569  | 754  |
-| C  | 15237  | 3573  | 1824 |
-| D  | 7722   | 3634  | 938  |
+| Native  | 6186   | 3373  | 741  |
+| Container  | 6305   | 3569  | 754  |
+| Container, enable-optimisations  | 15237  | 3573  | 1824 |
+| Container, SCL  | 7722   | 3634  | 938  |
 
 ![dn chart](./dn.png)
 
 ## Summary
 
-Comparing the results for task A and B, we see that with like-for-like python installations, using a container does not signicantly affect performance. In fact, the python container was sometimes a few seconds faster. This value is the total wallclock time reported by the job scheduler, and includes the time taken to load the container file.
+It can be observed from the results that there is only a marginal difference of less than 2% between native and containerised python when installed from source. Therefore, tje container does not signicantly affect performance. In fact, the python container was sometimes a few seconds faster. This value is the total wallclock time reported by the job scheduler, and includes the time taken to load the container file.
 
 The SCL python runs consistently slower than the compiled python on all nodes types, suggesting that, although convenient, may not be suitable for HPC environments.
 
