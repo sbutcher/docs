@@ -26,7 +26,7 @@ Each task was run 10 times on an compute node with 2xXeon E5-2683v4 processors. 
 
 #### Results
 
-jpeg('rplot.jpg')
+![pythonresults](./rplot.png)
 
 #### Mean values
 
