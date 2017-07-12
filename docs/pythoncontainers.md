@@ -28,14 +28,14 @@ Each task was run 10 times on an compute node with 2xXeon E5-2683v4 processors. 
 
 ![pythonresults](./rplot.png)
 
-#### Mean values
+#### Mean values over 10 runs on Xeon E5-2683v4
 
 | Task | cpusecs | ioops | RAM/MB |
 | --- | --: | --: | --: |
-| Native  | 4731 | 3751 | 566 |
-| Container  | 4723 | 3943 | 565 |
-| Container,<br/> enable-optimisations | 9892 | 3937 | 1184 |
-| Container, SCL  | 5604| 3976 | 681 |
+| Native  | 4682 | 3759 | 560 |
+| Container  | 4608 | 3971 | 554 |
+| Container,<br/> enable-optimisations | 9544 | 3948 | 1142 |
+| Container, SCL  | 5564 | 4009 | 676 |
 
 ## Summary
 
