@@ -30,7 +30,7 @@ Wallclock values were taken from the Grid Engine `qacct` command. The total wall
 
 The plot shows the time taken to complete each job. Results from both experiments are shown.
 
-<img src="/rplot-both.png" width=600>
+<img src="/rplot-both.png">
 
 #### Mean values over 10 runs on Xeon E5-2683v4 (jobs running separately)
 
