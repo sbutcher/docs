@@ -11,7 +11,7 @@ Linux containers offer a great way to compare software performance on a producti
 
 After early tests on 3 different node type using python 2.7.8 on CentOS6 containers showed SCL python running the same code between 16-25% more slowly than a self-compiled python 2.7.8 running natively, further tests were performed, instead with CentOS 7.
 
-A simple single-core python job to find [primes of a large number](https://github.com/sbutcher/python_test/blob/master/python_prime2.py) was run natively on a compute node via the Univa Grid Engine job scheduler. The job was then repeated on the same node inside a container running the same version of python compiled with gcc, and also a packaged python provided by the CentOS [Software Collections Library](https://wiki.centos.org/AdditionalResources/Repositories/SCL). The SCL is marketed as a simple way to get multiple versions of python on your enterprise OS without having to compile new versions. Jobs were run using CentOS 7.3 and python 2.7.13 supplied in the following ways:
+A single-core python job to find [primes of a large number](https://github.com/sbutcher/python_test/blob/master/python_prime2.py) was run natively on a compute node via the Univa Grid Engine job scheduler. The job was then repeated on the same node inside a container running the same version of python compiled with gcc, and also a packaged python provided by the CentOS [Software Collections Library](https://wiki.centos.org/AdditionalResources/Repositories/SCL). The SCL is marketed as a simple way to get multiple versions of python on your enterprise OS without having to compile new versions. Jobs were run using CentOS 7.3 and python 2.7.13 supplied in the following ways:
 
 * (A) Native OS
 * (B) Singularity container, python compiled from source
@@ -22,26 +22,46 @@ Where python was compiled, the same gcc version 4.8.5 was used. Tasks A and B ca
 
 ### Method
 
-Each task was run 10 times on an compute node with 2xXeon E5-2683v4 processors. Wallclock values were taken from the Grid Engine `qacct` command. The total wallclock time is reported by the job scheduler, and includes any overheads a container may introduce, such as time to load a container file. Jobs were run on a node with no other jobs running, but part of a production system that is susceptible to external influences such as GPFS filesystem load.
+Each task was run 10 times on an Lenovo Nextscale nx360m5 compute node with 2xXeon E5-2683v4 processors. Wallclock values were taken from the Grid Engine `qacct` command. The total wallclock time is reported by the job scheduler, and includes any overheads a container may introduce, such as time to load a container file. Jobs were run on a node with no other jobs running, but part of a production system that is susceptible to external influences such as GPFS filesystem load and system temperatures.
 
 #### Results
 
-![pythonresults](./rplot.png)
+#### Consecutive runs
+The following tests were run consecutively on an exclusively-booked node:
+
+<img src="/rplot.png" width=600>
 
 #### Mean values over 10 runs on Xeon E5-2683v4
 
-| Task | cpusecs | ioops | RAM/MB |
+| Task | Walltime/s | I/O ops/s | Memory/MB |
 | --- | --: | --: | --: |
 | Native  | 4682 | 3759 | 560 |
 | Container  | 4608 | 3971 | 554 |
 | Container,<br/> enable-optimisations | 9544 | 3948 | 1142 |
 | Container, SCL  | 5564 | 4009 | 676 |
 
+#### Collated runs
+
+The next results were run as job arrays of 10 similar tasks at a time on an exclusive node (e.g 10 Native jobs executed simultaneously, followed by 10 Container jobs)
+
+<img src="/rplot-batch.png" width=600>
+
+#### Mean values over 10 runs on Xeon E5-2683v4 with like-tasks run simultaneously
+
+| Task | cpusecs | ioops | RAM/MB |
+| --- | --: | --: | --: |
+| Native  | 5060 | 3779 | 605 |
+| Container  | 5066 | 3966 | 605 |
+| Container,<br/> enable-optimisations | 10440 | 3967 | 1244 |
+| Container, SCL  | 6022 | 4033 | 726|
+
 ## Summary
 
-It can be observed from the results that the python compiled inside a container performs well against the native version, with similar results. Therefore, the container does not signicantly affect performance. In fact, the python container was sometimes faster. This value is the total wallclock time reported by the job scheduler, and includes the time taken to load the container file.
+It can be observed from the results that for the single core, CPU-bound jobthe python compiled inside a container performs well against the native version, with similar results. Therefore, the container does not signicantly affect performance. In fact, the python container was sometimes faster. This value is the total wallclock time reported by the job scheduler, and includes the time taken to load the container file.
 
-The SCL python runs consistently slower than the compiled python on all nodes types, suggesting that, although convenient, may not be suitable for HPC environments.
+The collated runs showed less jitter in the results, as expected, since all jobs of each type were run at the same time. The average runtime was increased slightly for all tasks, including the native OS. Some thermal throttling may be occurring on the CPU as 10 processors would be maxed out instead of 1 for the job duration.
+
+The SCL python runs consistently slower than the compiled python on all nodes types, suggesting that, although a convenient method for system administrators to provide alternate versions, it may not be suitable for HPC environments. A container running python would perform better.
 
 The python compiled with `--enable-optimizations` performed very poorly, and should be a lesson to system administrators not to blindly follow suggestions without testing. Quite why it performed so badly requires further investigation.
 
