@@ -20,16 +20,17 @@ A single-core python job to find [primes of a large number](https://github.com/s
 
 Where python was compiled, the same gcc version 4.8.5 was used. Tasks A and B can be compared directly to establish if there is any performance impact on using containers vs native OS.
 
-### Method
+## Method
 
-Each task was run 10 times on an Lenovo Nextscale nx360m5 compute node with 2xXeon E5-2683v4 processors. Wallclock values were taken from the Grid Engine `qacct` command. The total wallclock time is reported by the job scheduler, and includes any overheads a container may introduce, such as time to load a container file. Jobs were run on a node with no other jobs running, but part of a production system that is susceptible to external influences such as GPFS filesystem load and system temperatures.
+Each task was run multiple times on an Lenovo Nextscale nx360m5 compute node with 2xXeon E5-2683v4 processors. The first experiment involved running one job at a time on an exclusive node (in total 10 jobs for each of the 4 different task types). The second experiment ran batches of 10 jobs at a time on an exclusive node, grouped by task type.
 
-#### Results
+Wallclock values were taken from the Grid Engine `qacct` command. The total wallclock time is reported by the job scheduler, and includes any overheads a container may introduce, such as time to load a container file. Jobs were run on a node with no other jobs running, but part of a production system that is susceptible to external influences such as GPFS filesystem load and system temperatures.
 
-#### Consecutive runs
-The following tests were run consecutively on an exclusively-booked node:
+## Results
 
-<img src="/rplot.png" width=600>
+The plot shows the time taken to complete each job. Results from both experiments are shown.
+
+<img src="/rplot-both.png" width=600>
 
 #### Mean values over 10 runs on Xeon E5-2683v4 (jobs running separately)
 
@@ -39,12 +40,6 @@ The following tests were run consecutively on an exclusively-booked node:
 | Container  | 4608 | 3971 | 554 |
 | Container,<br/> enable-optimisations | 9544 | 3948 | 1142 |
 | Container, SCL  | 5564 | 4009 | 676 |
-
-#### Collated runs
-
-The next results were run as job arrays of 10 similar tasks at a time on an exclusive node (e.g 10 Native jobs executed simultaneously, followed by 10 Container jobs)
-
-<img src="/rplot-batch.png" width=600>
 
 #### Mean values over 10 runs on Xeon E5-2683v4 (like-tasks run simultaneously)
 
@@ -59,7 +54,7 @@ The next results were run as job arrays of 10 similar tasks at a time on an excl
 
 It can be observed from the results that for the single core, CPU-bound job, the python compiled inside a container produces similar results to the compiled python on the native OS. Therefore, the container does not affect performance, in terms of CPU resource or RAM. In fact, the python container was often faster for the separate runs.
 
-The collated runs showed less jitter in the results, as expected, since all jobs of each type were run at the same time. The average runtime was increased slightly for all tasks, including the native OS. Some thermal throttling may be occurring on the CPU as 10 processors would be maxed out instead of 1 for the job duration.
+The simultaneous run tasks showed less jitter in the results, as expected, since all jobs of each type were run at the same time. The average runtime was increased slightly for all tasks, including the native OS. Some thermal throttling may be occurring on the CPU as 10 processors would be maxed out instead of 1 for the job duration.
 
 The SCL python runs consistently slower than the compiled python on all nodes types, suggesting that, although a convenient method for system administrators to provide alternate versions, it may not be suitable for HPC environments. A container running python would perform better.
 
