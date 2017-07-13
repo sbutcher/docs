@@ -31,7 +31,7 @@ The following tests were run consecutively on an exclusively-booked node:
 
 <img src="/rplot.png" width=600>
 
-#### Mean values over 10 runs on Xeon E5-2683v4
+#### Mean values over 10 runs on Xeon E5-2683v4 (jobs running separately)
 
 | Task | Walltime/s | I/O ops/s | Memory/MB |
 | --- | --: | --: | --: |
@@ -46,9 +46,9 @@ The next results were run as job arrays of 10 similar tasks at a time on an excl
 
 <img src="/rplot-batch.png" width=600>
 
-#### Mean values over 10 runs on Xeon E5-2683v4 with like-tasks run simultaneously
+#### Mean values over 10 runs on Xeon E5-2683v4 (like-tasks run simultaneously)
 
-| Task | cpusecs | ioops | RAM/MB |
+| Task | Walltime/s | I/O op/s | Memory/MB |
 | --- | --: | --: | --: |
 | Native  | 5060 | 3779 | 605 |
 | Container  | 5066 | 3966 | 605 |
