@@ -57,7 +57,7 @@ The next results were run as job arrays of 10 similar tasks at a time on an excl
 
 ## Summary
 
-It can be observed from the results that for the single core, CPU-bound jobthe python compiled inside a container performs well against the native version, with similar results. Therefore, the container does not signicantly affect performance. In fact, the python container was sometimes faster. This value is the total wallclock time reported by the job scheduler, and includes the time taken to load the container file.
+It can be observed from the results that for the single core, CPU-bound job, the python compiled inside a container produces similar results to the compiled python on the native OS. Therefore, the container does not affect performance, in terms of CPU resource or RAM. In fact, the python container was often faster for the separate runs.
 
 The collated runs showed less jitter in the results, as expected, since all jobs of each type were run at the same time. The average runtime was increased slightly for all tasks, including the native OS. Some thermal throttling may be occurring on the CPU as 10 processors would be maxed out instead of 1 for the job duration.
 
