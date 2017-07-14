@@ -24,7 +24,7 @@ Where python was compiled, the same gcc version 4.8.5 was used. Tasks A and B ca
 
 Each task was run multiple times on an Lenovo Nextscale nx360m5 compute node with 2xXeon E5-2683v4 processors. The first experiment involved running one job at a time on an exclusive node (in total 10 jobs for each of the 4 different task types). The second experiment ran batches of 10 jobs at a time on an exclusive node, grouped by task type.
 
-Wallclock values were taken from the Grid Engine `qacct` command. The total wallclock time is reported by the job scheduler, and includes any overheads a container may introduce, such as time to load a container file. Jobs were run on a node with no other jobs running, but part of a production system that is susceptible to external influences such as GPFS filesystem load and system temperatures.
+Wallclock values were taken from the Grid Engine `qacct` command. The total wallclock time is reported by the job scheduler, and includes any overheads a container may introduce, such as time to load a container file. The measured time does not include the time taken to perform pre-requisite tasks such as creating the re-usable container or compile python. Jobs were run on a node with no other jobs running, but part of a production system that is susceptible to external influences such as GPFS filesystem load and system temperatures.
 
 ## Results
 
@@ -65,3 +65,10 @@ Containers provide an excellent way to provision tricky applications, particular
 ## Data files
 
 The Singularity definition files used for these tests can be found on [Github](https://github.com/sbutcher/python_test).
+
+## References
+
+* [Python project](https://python.org)
+* [CentOS](https://centos.org)
+* [Singularity](http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0177459)
+* Work was performed on QMUL's [Apocrita Cluster](http://doi.org/10.5281/zenodo.438045)
