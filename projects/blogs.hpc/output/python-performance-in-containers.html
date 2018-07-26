@@ -1,0 +1,235 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="" />
+
+  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="/theme/stylesheet/style.min.css">
+
+  <link rel="stylesheet" type="text/css" href="/theme/pygments/github.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/font-awesome/css/font-awesome.min.css">
+
+
+
+
+
+
+
+<meta name="author" content="Simon Butcher" />
+<meta name="description" content="Singularity is a container solution designed for HPC. Due to the secure and simple design, it can be easily used to provide applications for use with HPC clusters where other containers, such as Docker would not be suitable. Testing python inside containers Linux containers offer a great way to compare …" />
+<meta name="keywords" content="containers, benchmarking, python">
+
+<meta property="og:site_name" content="Research IT blog"/>
+<meta property="og:title" content="Python performance in containers"/>
+<meta property="og:description" content="Singularity is a container solution designed for HPC. Due to the secure and simple design, it can be easily used to provide applications for use with HPC clusters where other containers, such as Docker would not be suitable. Testing python inside containers Linux containers offer a great way to compare …"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="/python-performance-in-containers.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2017-07-03 10:20:00+01:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="/author/simon-butcher.html">
+<meta property="article:section" content="Benchmarking"/>
+<meta property="article:tag" content="containers"/>
+<meta property="article:tag" content="benchmarking"/>
+<meta property="article:tag" content="python"/>
+<meta property="og:image" content="">
+
+  <title>Research IT blog &ndash; Python performance in containers</title>
+
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="">
+        <img src="/theme/img/profile.png" alt="" title="">
+      </a>
+      <h1><a href=""></a></h1>
+
+
+      <nav>
+        <ul class="list">
+
+          <li><a href="http://127.0.0.1:8000" target="_blank">Home</a></li>
+          <li><a href="https://docs.hpc.qmul.ac.uk/" target="_blank">Docs</a></li>
+          <li><a href="http://jinja.pocoo.org/" target="_blank">Jinja2</a></li>
+          <li><a href="#" target="_blank">You can modify those links in your config file</a></li>
+        </ul>
+      </nav>
+
+      <ul class="social">
+        <li><a class="sc-You can add links in your config file" href="#" target="_blank"><i class="fa fa-You can add links in your config file"></i></a></li>
+        <li><a class="sc-Another social link" href="#" target="_blank"><i class="fa fa-Another social link"></i></a></li>
+      </ul>
+    </div>
+
+
+  </aside>
+  <main>
+
+
+<article class="single">
+  <header>
+      
+    <h1 id="python-performance-in-containers">Python performance in containers</h1>
+    <p>
+          Posted on Mon 03 July 2017 in <a href="/category/benchmarking.html">Benchmarking</a>
+
+
+    </p>
+  </header>
+
+
+  <div>
+    <p><a href="http://singularity.lbl.gov/">Singularity</a> is a container solution designed for HPC.
+Due to the secure and simple design, it can be easily used to provide
+applications for use with HPC clusters where other containers, such as Docker
+would not be suitable.</p>
+<h2>Testing python inside containers</h2>
+<p>Linux containers offer a great way to compare software performance on a production system without installing extra packages on your shared filesystem.</p>
+<p>After early tests on 3 different node type using python 2.7.8 on CentOS6 containers showed SCL python running the same code between 16-25% more slowly than a self-compiled python 2.7.8 running natively, further tests were performed, instead with CentOS 7.</p>
+<p>A single-core python job to find <a href="https://github.com/sbutcher/python_test/blob/master/python_prime2.py">primes of a large number</a> was run natively on a compute node via the Univa Grid Engine job scheduler. The job was then repeated on the same node inside a container running the same version of python compiled with gcc, and also a packaged python provided by the CentOS <a href="https://wiki.centos.org/AdditionalResources/Repositories/SCL">Software Collections Library</a>. The SCL is marketed as a simple way to get multiple versions of python on your enterprise OS without having to compile new versions. Jobs were run using CentOS 7.3 and python 2.7.13 supplied in the following ways:</p>
+<ul>
+<li>(A) Native OS</li>
+<li>(B) Singularity container, python compiled from source</li>
+<li>(C) Singularity container, python compiled from source, configured with --enable-optimizations flag</li>
+<li>(D) Singularity container, python supplied via CentOS SCL</li>
+</ul>
+<p>Where python was compiled, the same gcc version 4.8.5 was used. Tasks A and B can be compared directly to establish if there is any performance impact on using containers vs native OS.</p>
+<h2>Method</h2>
+<p>Each task was run multiple times on an Lenovo Nextscale nx360m5 compute node with 2xXeon E5-2683v4 processors. The first experiment involved running one job at a time on an exclusive node (in total 10 jobs for each of the 4 different task types). The second experiment ran batches of 10 jobs at a time on an exclusive node, grouped by task type.</p>
+<p>Wallclock values were taken from the Grid Engine <code>qacct</code> command. The total wallclock time is reported by the job scheduler, and includes any overheads a container may introduce, such as time to load a container file. The measured time does not include the time taken to perform pre-requisite tasks such as creating the re-usable container or compile python. Jobs were run on a node with no other jobs running, but part of a production system that is susceptible to external influences such as GPFS filesystem load and system temperatures.</p>
+<h2>Results</h2>
+<p>The plot shows the time taken to complete each job. Results from both experiments are shown.</p>
+<p><img src="/rplot-both.png"></p>
+<h4>Mean values over 10 runs on Xeon E5-2683v4 (jobs running separately)</h4>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th align="right">Walltime/s</th>
+<th align="right">I/O ops/s</th>
+<th align="right">Memory/MB</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Native</td>
+<td align="right">4682</td>
+<td align="right">3759</td>
+<td align="right">560</td>
+</tr>
+<tr>
+<td>Container</td>
+<td align="right">4608</td>
+<td align="right">3971</td>
+<td align="right">554</td>
+</tr>
+<tr>
+<td>Container,<br/> enable-optimisations</td>
+<td align="right">9544</td>
+<td align="right">3948</td>
+<td align="right">1142</td>
+</tr>
+<tr>
+<td>Container, SCL</td>
+<td align="right">5564</td>
+<td align="right">4009</td>
+<td align="right">676</td>
+</tr>
+</tbody>
+</table>
+<h4>Mean values over 10 runs on Xeon E5-2683v4 (like-tasks run simultaneously)</h4>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th align="right">Walltime/s</th>
+<th align="right">I/O op/s</th>
+<th align="right">Memory/MB</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Native</td>
+<td align="right">5060</td>
+<td align="right">3779</td>
+<td align="right">605</td>
+</tr>
+<tr>
+<td>Container</td>
+<td align="right">5066</td>
+<td align="right">3966</td>
+<td align="right">605</td>
+</tr>
+<tr>
+<td>Container,<br/> enable-optimisations</td>
+<td align="right">10440</td>
+<td align="right">3967</td>
+<td align="right">1244</td>
+</tr>
+<tr>
+<td>Container, SCL</td>
+<td align="right">6022</td>
+<td align="right">4033</td>
+<td align="right">726</td>
+</tr>
+</tbody>
+</table>
+<h2>Summary</h2>
+<p>It can be observed from the results that for the single core, CPU-bound job, the python compiled inside a container produces similar results to the compiled python on the native OS. Therefore, the container does not affect performance, in terms of CPU resource or RAM. In fact, the python container was often faster for the separate runs.</p>
+<p>The simultaneous run tasks showed less jitter in the results, as expected, since all jobs of each type were run at the same time. The average runtime was increased slightly for all tasks, including the native OS. Some thermal throttling may be occurring on the CPU as 10 processors would be maxed out instead of 1 for the job duration.</p>
+<p>The SCL python runs consistently slower than the compiled python on all nodes types, suggesting that, although a convenient method for system administrators to provide alternate versions, it may not be suitable for HPC environments. A container running python would perform better.</p>
+<p>The python compiled with <code>--enable-optimizations</code> performed very poorly, and should be a lesson to system administrators not to blindly follow suggestions without testing. Quite why it performed so badly requires further investigation.</p>
+<p>Containers provide an excellent way to provision tricky applications, particularly in the Bioinformatics and Deep-learning disciplines, but additionally provide a safe and easy way to gain performance improvements and new features offered by the latest and greatest versions of common applications, while offering an easy way to compare different configuration and compilation options that, as we have seen, could have significant impact on performance, which is critical in an HPC environment.</p>
+<h2>Data files</h2>
+<p>The Singularity definition files used for these tests can be found on <a href="https://github.com/sbutcher/python_test">Github</a>.</p>
+<h2>References</h2>
+<ul>
+<li><a href="https://python.org">Python project</a></li>
+<li><a href="https://centos.org">CentOS</a></li>
+<li><a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0177459">Singularity</a></li>
+<li>Work was performed on QMUL's <a href="http://doi.org/10.5281/zenodo.438045">Apocrita Cluster</a></li>
+</ul>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="/tag/containers.html">containers</a>
+      <a href="/tag/benchmarking.html">benchmarking</a>
+      <a href="/tag/python.html">python</a>
+    </p>
+  </div>
+
+
+
+
+
+</article>
+
+    <footer>
+<p>&copy;  </p>
+<p>    Powered by <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a>
+</p>    </footer>
+  </main>
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " Research IT blog ",
+  "url" : "",
+  "image": "",
+  "description": ""
+}
+</script>
+
+</body>
+</html>

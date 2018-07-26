@@ -1,0 +1,69 @@
+{
+    "docs": [
+        {
+            "location": "/", 
+            "text": "Welcome\n\n\nPages\n\n\nPython benchmarking\n with Singularity containers", 
+            "title": "Home"
+        }, 
+        {
+            "location": "/#welcome", 
+            "text": "", 
+            "title": "Welcome"
+        }, 
+        {
+            "location": "/#pages", 
+            "text": "Python benchmarking  with Singularity containers", 
+            "title": "Pages"
+        }, 
+        {
+            "location": "/pythoncontainers/", 
+            "text": "Benchmarking python with singularity containers\n\n\nSingularity\n is a container solution designed for HPC.\nDue to the secure and simple design, it can be easily used to provide\napplications for use with HPC clusters where other containers, such as Docker\nwould not be suitable.\n\n\nTesting python inside containers\n\n\nLinux containers offer a great way to compare software performance on a production system without installing extra packages on your shared filesystem.\n\n\nAfter early tests on 3 different node type using python 2.7.8 on CentOS6 containers showed SCL python running the same code between 16-25% more slowly than a self-compiled python 2.7.8 running natively, further tests were performed, instead with CentOS 7.\n\n\nA single-core python job to find \nprimes of a large number\n was run natively on a compute node via the Univa Grid Engine job scheduler. The job was then repeated on the same node inside a container running the same version of python compiled with gcc, and also a packaged python provided by the CentOS \nSoftware Collections Library\n. The SCL is marketed as a simple way to get multiple versions of python on your enterprise OS without having to compile new versions. Jobs were run using CentOS 7.3 and python 2.7.13 supplied in the following ways:\n\n\n\n\n(A) Native OS\n\n\n(B) Singularity container, python compiled from source\n\n\n(C) Singularity container, python compiled from source, configured with --enable-optimizations flag\n\n\n(D) Singularity container, python supplied via  CentOS SCL\n\n\n\n\nWhere python was compiled, the same gcc version 4.8.5 was used. Tasks A and B can be compared directly to establish if there is any performance impact on using containers vs native OS.\n\n\nWallclock Results\n\n\nThe following statistics were averaged over multiple runs using the Grid Engine \nqacct\n command, and rounded to the nearest whole number for readability. The total wallclock time is reported by the job scheduler, and includes any overheads a container may introduce, such as time to load a container file.\n\n\nProcessor type: Xeon E5-2683 v4\n\n\n\n\n\n\n\n\nTask\n\n\ncpusecs\n\n\nioops\n\n\nRAM/MB\n\n\n\n\n\n\n\n\n\n\nNative\n\n\n4731\n\n\n3751\n\n\n566\n\n\n\n\n\n\nContainer\n\n\n4723\n\n\n3943\n\n\n565\n\n\n\n\n\n\nContainer,\n enable-optimisations\n\n\n9892\n\n\n3937\n\n\n1184\n\n\n\n\n\n\nContainer, SCL\n\n\n5604\n\n\n3976\n\n\n681\n\n\n\n\n\n\n\n\n\n\nProcessor type: AMD Opteron 6712\n\n\n\n\n\n\n\n\nTask\n\n\ncpusecs\n\n\nioops\n\n\nmem/MB\n\n\n\n\n\n\n\n\n\n\nNative\n\n\n9687\n\n\n3975\n\n\n1160\n\n\n\n\n\n\nContainer\n\n\n9667\n\n\n4166\n\n\n1158\n\n\n\n\n\n\nContainer,\n enable-optimisations\n\n\n23478\n\n\n4155\n\n\n2810\n\n\n\n\n\n\nContainer, SCL\n\n\n11813\n\n\n4229\n\n\n1436\n\n\n\n\n\n\n\n\n\n\nProcessor type: Xeon E5645\n\n\n\n\n\n\n\n\nTask\n\n\ncpusecs\n\n\nioops\n\n\nmem/MB\n\n\n\n\n\n\n\n\n\n\nNative\n\n\n6186\n\n\n3373\n\n\n741\n\n\n\n\n\n\nContainer\n\n\n6305\n\n\n3569\n\n\n754\n\n\n\n\n\n\nContainer,\n enable-optimisations\n\n\n15237\n\n\n3573\n\n\n1824\n\n\n\n\n\n\nContainer, SCL\n\n\n7722\n\n\n3634\n\n\n938\n\n\n\n\n\n\n\n\n\n\nSummary\n\n\nIt can be observed from the results that there is only a marginal difference of less than 2% between native and containerised python when installed from source. Therefore, tje container does not signicantly affect performance. In fact, the python container was sometimes a few seconds faster. This value is the total wallclock time reported by the job scheduler, and includes the time taken to load the container file.\n\n\nThe SCL python runs consistently slower than the compiled python on all nodes types, suggesting that, although convenient, may not be suitable for HPC environments.\n\n\nThe python compiled with \n--enable-optimizations\n performed very poorly, and should be a lesson to system administrators not to blindly follow suggestions without testing. Quite why it performed so badly requires further investigation.\n\n\nContainers provide an excellent way to provision tricky applications, particularly in the Bioinformatics and Deep-learning disciplines, but additionally provide a safe and easy way to gain performance improvements and new features offered by the latest and greatest versions of common applications, while offering an easy way to compare different configuration and compilation options that, as we have seen, could have significant impact on performance, which is critical in an HPC environment.\n\n\nData files\n\n\nThe Singularity definition files used for these tests can be found on \nGithub\n.", 
+            "title": "Python benchmarks"
+        }, 
+        {
+            "location": "/pythoncontainers/#benchmarking-python-with-singularity-containers", 
+            "text": "Singularity  is a container solution designed for HPC.\nDue to the secure and simple design, it can be easily used to provide\napplications for use with HPC clusters where other containers, such as Docker\nwould not be suitable.", 
+            "title": "Benchmarking python with singularity containers"
+        }, 
+        {
+            "location": "/pythoncontainers/#testing-python-inside-containers", 
+            "text": "Linux containers offer a great way to compare software performance on a production system without installing extra packages on your shared filesystem.  After early tests on 3 different node type using python 2.7.8 on CentOS6 containers showed SCL python running the same code between 16-25% more slowly than a self-compiled python 2.7.8 running natively, further tests were performed, instead with CentOS 7.  A single-core python job to find  primes of a large number  was run natively on a compute node via the Univa Grid Engine job scheduler. The job was then repeated on the same node inside a container running the same version of python compiled with gcc, and also a packaged python provided by the CentOS  Software Collections Library . The SCL is marketed as a simple way to get multiple versions of python on your enterprise OS without having to compile new versions. Jobs were run using CentOS 7.3 and python 2.7.13 supplied in the following ways:   (A) Native OS  (B) Singularity container, python compiled from source  (C) Singularity container, python compiled from source, configured with --enable-optimizations flag  (D) Singularity container, python supplied via  CentOS SCL   Where python was compiled, the same gcc version 4.8.5 was used. Tasks A and B can be compared directly to establish if there is any performance impact on using containers vs native OS.", 
+            "title": "Testing python inside containers"
+        }, 
+        {
+            "location": "/pythoncontainers/#wallclock-results", 
+            "text": "The following statistics were averaged over multiple runs using the Grid Engine  qacct  command, and rounded to the nearest whole number for readability. The total wallclock time is reported by the job scheduler, and includes any overheads a container may introduce, such as time to load a container file.", 
+            "title": "Wallclock Results"
+        }, 
+        {
+            "location": "/pythoncontainers/#processor-type-xeon-e5-2683-v4", 
+            "text": "Task  cpusecs  ioops  RAM/MB      Native  4731  3751  566    Container  4723  3943  565    Container,  enable-optimisations  9892  3937  1184    Container, SCL  5604  3976  681", 
+            "title": "Processor type: Xeon E5-2683 v4"
+        }, 
+        {
+            "location": "/pythoncontainers/#processor-type-amd-opteron-6712", 
+            "text": "Task  cpusecs  ioops  mem/MB      Native  9687  3975  1160    Container  9667  4166  1158    Container,  enable-optimisations  23478  4155  2810    Container, SCL  11813  4229  1436", 
+            "title": "Processor type: AMD Opteron 6712"
+        }, 
+        {
+            "location": "/pythoncontainers/#processor-type-xeon-e5645", 
+            "text": "Task  cpusecs  ioops  mem/MB      Native  6186  3373  741    Container  6305  3569  754    Container,  enable-optimisations  15237  3573  1824    Container, SCL  7722  3634  938", 
+            "title": "Processor type: Xeon E5645"
+        }, 
+        {
+            "location": "/pythoncontainers/#summary", 
+            "text": "It can be observed from the results that there is only a marginal difference of less than 2% between native and containerised python when installed from source. Therefore, tje container does not signicantly affect performance. In fact, the python container was sometimes a few seconds faster. This value is the total wallclock time reported by the job scheduler, and includes the time taken to load the container file.  The SCL python runs consistently slower than the compiled python on all nodes types, suggesting that, although convenient, may not be suitable for HPC environments.  The python compiled with  --enable-optimizations  performed very poorly, and should be a lesson to system administrators not to blindly follow suggestions without testing. Quite why it performed so badly requires further investigation.  Containers provide an excellent way to provision tricky applications, particularly in the Bioinformatics and Deep-learning disciplines, but additionally provide a safe and easy way to gain performance improvements and new features offered by the latest and greatest versions of common applications, while offering an easy way to compare different configuration and compilation options that, as we have seen, could have significant impact on performance, which is critical in an HPC environment.", 
+            "title": "Summary"
+        }, 
+        {
+            "location": "/pythoncontainers/#data-files", 
+            "text": "The Singularity definition files used for these tests can be found on  Github .", 
+            "title": "Data files"
+        }, 
+        {
+            "location": "/about/", 
+            "text": "Simon Butcher is Head of Research Applications at Queen Mary University of London.", 
+            "title": "About"
+        }
+    ]
+}

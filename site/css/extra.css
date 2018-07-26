@@ -1,0 +1,30 @@
+/* Reduce table minimum width so a combo of short and long headers / values
+ * doesn't look silly and waste space
+ */
+th,td,tr {
+    min-width: 1em !important;
+}
+
+/* Adjust font size */
+.md-typeset {
+    font-size: 15px;
+}
+
+/* Hide bottom of page (powered by) */
+.md-footer-meta {
+    display: none;
+}
+
+/* Make navigation footer smaller */
+
+.md-footer-nav__inner {
+    padding: 0;
+    height: 65px
+}
+
+.md-footer-nav__link {
+    padding: 10px;
+    padding-bottom: 0px;
+}
+
+
